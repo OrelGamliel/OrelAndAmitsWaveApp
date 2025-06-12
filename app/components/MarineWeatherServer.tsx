@@ -7,7 +7,7 @@ import { MarineWeatherData } from '../utils/types';
 
 export default async function MarineWeatherServer() {
   try {
-    const marineRes = await fetch('http://localhost:3000/api/marine', {
+    const marineRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/marine`, {
       cache: 'no-store',
     });
     const marineJson = await marineRes.json();
@@ -16,7 +16,7 @@ export default async function MarineWeatherServer() {
       throw new Error('Failed to get marine data');
     }
 
-    const windRes = await fetch('http://localhost:3000/api/wind', {
+    const windRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/wind`, {
       cache: 'no-store',
     });
     const windJson = await windRes.json();
