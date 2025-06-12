@@ -1,6 +1,5 @@
 'use client';
 
-import { log } from 'console';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
@@ -32,8 +31,9 @@ export default function BeachDayAI({ waveHeight, windSpeed,uvIndex }: Props) {
         
         const json = await res.json();
         setAiResponse(json.result ?? 'No response from AI');
-      } catch (err: any) {
-        setError(err.message);
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        setError(message);
       } finally {
         setLoading(false);
       }

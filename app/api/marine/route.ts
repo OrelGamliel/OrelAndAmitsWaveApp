@@ -1,3 +1,5 @@
+import { NextResponse } from 'next/server';
+
 const TEL_AVIV = { lat: 32.08, lon: 34.78 };
 
 export async function GET() {
@@ -6,13 +8,13 @@ export async function GET() {
 
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) {
-      return new Response(JSON.stringify({ error: 'Failed to fetch marine data' }), { status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch marine data' }, { status: 500 });
     }
 
     const json = await res.json();
 
     if (!json.hourly || !json.hourly.time) {
-      return new Response(JSON.stringify({ error: 'No hourly data' }), { status: 404 });
+      return NextResponse.json({ error: 'No hourly data' }, { status: 404 });
     }
 
     // Format current date to match API time format
@@ -30,20 +32,16 @@ export async function GET() {
 
     const index = json.hourly.time.findIndex((t: string) => t.startsWith(now));
     if (index === -1) {
-      return new Response(JSON.stringify({ error: 'No data for current hour' }), { status: 404 });
+      return NextResponse.json({ error: 'No data for current hour' }, { status: 404 });
     }
 
     const waveHeight = json.hourly.wave_height[index];
     const time = json.hourly.time[index];
 
-    return new Response(
-      JSON.stringify({ waveHeight, time }),
-      { headers: { 'Content-Type': 'application/json' }, status: 200 }
-    );
-  } catch (error: any) {
-    return new Response(
-      JSON.stringify({ error: 'Internal server error', detail: error.message }),
-      { status: 500 }
-    );
+    return NextResponse.json({ waveHeight, time }, { status: 200 });
+
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: 'Internal server error', detail: message }, { status: 500 });
   }
 }

@@ -9,7 +9,6 @@ import AmitsRecommendation from './AmitsRecommendation';
 
 
 export default function MarineWeatherClient({ data }: { data: MarineWeatherData }) {
-  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <div dir="rtl" className="min-h-screen bg-gradient-to-b from-sky-100 to-blue-300 flex items-center justify-center p-4">

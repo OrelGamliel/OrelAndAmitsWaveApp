@@ -54,7 +54,8 @@ export async function POST(request: NextRequest) {
     const message = chatCompletion.choices?.[0]?.message?.content ?? "No valid AI response.";
     return NextResponse.json({ result: message });
 
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message  || 'Internal server error' }, { status: 500 });
   }
 }

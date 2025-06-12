@@ -36,7 +36,8 @@ export default async function MarineWeatherServer() {
     console.log(data,"datadatadata");
     
     return <MarineWeatherClient data={data} />;
-  } catch (error: any) {
-    return <p className="text-red-600">Error loading weather data: {error.message}</p>;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return <p className="text-red-600">Error loading weather data: {message}</p>;
   }
 }

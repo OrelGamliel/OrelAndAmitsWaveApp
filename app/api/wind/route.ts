@@ -1,19 +1,20 @@
+import { NextResponse } from 'next/server';
+
 const TEL_AVIV = { lat: 32.08, lon: 34.78 };
 
 export async function GET() {
   try {
-    const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${TEL_AVIV.lat}&longitude=${TEL_AVIV.lon}&hourly=wind_speed_10m&hourly=uv_index&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${TEL_AVIV.lat}&longitude=${TEL_AVIV.lon}&hourly=wind_speed_10m,uv_index&timezone=auto`;
 
     const response = await fetch(url);
     if (!response.ok) {
-      return new Response(JSON.stringify({ error: 'Failed to fetch from Open-Meteo' }), { status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch from Open-Meteo' }, { status: 500 });
     }
 
     const json = await response.json();
 
-    if (!json.hourly || !json.hourly.time || !json.hourly.wind_speed_10m) {
-      return new Response(JSON.stringify({ error: 'Incomplete weather data' }), { status: 404 });
+    if (!json.hourly?.time || !json.hourly.wind_speed_10m || !json.hourly.uv_index) {
+      return NextResponse.json({ error: 'Incomplete weather data' }, { status: 404 });
     }
 
     const tz = 'Asia/Jerusalem';
@@ -29,20 +30,16 @@ export async function GET() {
 
     const index = json.hourly.time.findIndex((t: string) => t.startsWith(now));
     if (index === -1) {
-      return new Response(JSON.stringify({ error: 'No data for current hour' }), { status: 404 });
+      return NextResponse.json({ error: 'No data for current hour' }, { status: 404 });
     }
 
     const windSpeedMps = json.hourly.wind_speed_10m[index];
     const uvIndex = json.hourly.uv_index[index];
-    const windSpeedKph = Math.trunc(windSpeedMps)
+    const windSpeedKph = Math.trunc(windSpeedMps);
 
-    console.log(json,"jsonjsonjsonjson");
-    
-    return new Response(JSON.stringify({ windSpeed: windSpeedKph,uvIndex:uvIndex }), {
-      headers: { 'Content-Type': 'application/json' },
-      status: 200,
-    });
-  } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message || 'Internal server error' }), { status: 500 });
+    return NextResponse.json({ windSpeed: windSpeedKph, uvIndex }, { status: 200 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
