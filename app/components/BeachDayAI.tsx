@@ -46,7 +46,7 @@ export default function BeachDayAI({ waveHeight, windSpeed,uvIndex }: Props) {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="p-4 max-w-md mx-auto bg-blue-50 rounded-lg shadow">
+    <div className="text-gray-800 p-4 max-w-md mx-auto bg-blue-50 rounded-lg shadow">
       {/* <h2 className="text-xl font-semibold mb-4">🌊 Beach Day AI Advisor</h2>
       <p><strong>Wave Height:</strong> {waveHeight.toFixed(2)} m</p>
       <p><strong>Wind Speed:</strong> {windSpeed.toFixed(1)} km/h</p> */}

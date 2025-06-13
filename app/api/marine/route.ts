@@ -28,7 +28,7 @@ export async function GET() {
     });
 
     const parts = formatter.format(new Date()).split(' ');
-    const now = `${parts[0]}T${parts[1]}`; // e.g., "2025-06-11T20"
+    const now = `${parts[0]}T${parts[1]}`; 
 
     const index = json.hourly.time.findIndex((t: string) => t.startsWith(now));
     if (index === -1) {

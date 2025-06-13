@@ -40,7 +40,7 @@ export default function AmitsRecommendation({ waveHeight, windSpeed }: Props) {
     <div className="p-4 bg-orange-100 rounded-xl shadow text-center">
       <h3 className="text-lg font-bold text-orange-800 mb-2">🧠 המלצת עמית</h3>
       <p className="text-4xl font-extrabold text-orange-600">{score.toFixed(1)} / 10</p>
-      <p className="text-sm mt-2">{getLabel(score)}</p>
+      <p className="text-gray-800 text-sm mt-2">{getLabel(score)}</p>
     </div>
   );
 }

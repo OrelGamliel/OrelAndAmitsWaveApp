@@ -3,7 +3,7 @@ import { InferenceClient } from "@huggingface/inference";
 
 export async function POST(request: NextRequest) {
   try {
-    const { waveHeight, windSpeed,uvIndex } = await request.json();
+    const { waveHeight, windSpeed,uvIndex,temperature } = await request.json();
 
     // if (waveHeight === undefined || windSpeed === undefined || uvIndex === undefined) {
     //   return NextResponse.json({ error: 'Missing waveHeight or windSpeed' }, { status: 400 });
