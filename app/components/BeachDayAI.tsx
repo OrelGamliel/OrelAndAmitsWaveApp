@@ -1,14 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { MarineWeatherWithoutTime } from '../utils/types';
 
-type Props = {
-  waveHeight: number;
-  windSpeed: number;
-  uvIndex: number;
-};
-
-export default function BeachDayAI({ waveHeight, windSpeed,uvIndex }: Props) {
+export default function BeachDayAI({ waveHeight, windSpeed,uvIndex,temperature }: MarineWeatherWithoutTime) {
   const [aiResponse, setAiResponse] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,10 +17,10 @@ export default function BeachDayAI({ waveHeight, windSpeed,uvIndex }: Props) {
         const res = await fetch('/api/beach-comfort', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ waveHeight, windSpeed,uvIndex }),
+          body: JSON.stringify({ waveHeight, windSpeed,uvIndex,temperature }),
           
         });
-        console.log(res,'orel');
+        // console.log(res,'orel');
 
         if (!res.ok) throw new Error('Failed to get AI response');
         
@@ -51,8 +46,8 @@ export default function BeachDayAI({ waveHeight, windSpeed,uvIndex }: Props) {
       <p><strong>Wave Height:</strong> {waveHeight.toFixed(2)} m</p>
       <p><strong>Wind Speed:</strong> {windSpeed.toFixed(1)} km/h</p> */}
       <hr className="my-4" />
-      <h3 className="font-semibold mb-2">המלצת הAI הסיני👁️‍🗨️</h3>
-      <p>{aiResponse}</p>
+      <h3 style={{color: 'black'}} className="font-semibold mb-2">המלצת הAI הסיני👁️‍🗨️</h3>
+      <p style={{color: 'black'}} >{aiResponse}</p>
     </div>
   );
 }

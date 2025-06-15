@@ -11,6 +11,8 @@ import AmitsRecommendation from './AmitsRecommendation';
 export default function MarineWeatherClient({ data }: { data: MarineWeatherData }) {
 
   return (
+    console.log(data,"datadata"),
+    
     <div dir="rtl" className="min-h-screen bg-gradient-to-b from-sky-100 to-blue-300 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -29,7 +31,9 @@ export default function MarineWeatherClient({ data }: { data: MarineWeatherData 
         <div className="my-4 text-sm text-gray-800 space-y-2 bg-blue-50 rounded-lg p-4">
           <p><strong>🌊 גובה גלים:</strong> {data.waveHeight} מטר</p>
           <p><strong>💨 מהירות רוח:</strong> {data.windSpeed} קמ״ש</p>
-          <p><strong> רמת קרינה:</strong> {data.uvIndex}</p>
+          <p><strong>🔆 רמת קרינה:</strong> {data.uvIndex}</p>
+          <p><strong>🌡️ טמפרטורה:</strong> {data.temperature}°C</p>
+
         </div>
 
         <div className="relative bg-gradient-to-b from-white to-blue-50 rounded-xl p-4 shadow-inner overflow-hidden">
@@ -39,7 +43,7 @@ export default function MarineWeatherClient({ data }: { data: MarineWeatherData 
 
         <div className="relative bg-gradient-to-b from-white to-blue-50 rounded-xl p-4 shadow-inner overflow-hidden">
           <div className="absolute inset-0 bg-[url('/waves.svg')] bg-bottom bg-repeat-x opacity-10 animate-pulse" />
-          <BeachDayAI waveHeight={data.waveHeight} windSpeed={data.windSpeed} uvIndex={data.uvIndex}/>
+          <BeachDayAI waveHeight={data.waveHeight} windSpeed={data.windSpeed} uvIndex={data.uvIndex} temperature={data.temperature}/>
         </div>
         <div className="iframe-env">
             <iframe

@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
     Wave height: ${waveHeight} meters
     Wind speed: ${windSpeed} km/h
     Uv index: ${uvIndex}
+    temperature: ${temperature}
 
     As an expert beach advisor, is it comfortable and safe to spend a day at the beach under these conditions? 
     Answer in **one short sentence only**. Be clear and concise.

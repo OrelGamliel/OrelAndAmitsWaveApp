@@ -21,7 +21,7 @@ export default async function MarineWeatherServer() {
     });
     const windJson = await windRes.json();
 
-    console.log(windJson.uvIndex,"windJson.uvIndex");
+    console.log(windJson,"windJson.temperature");
     
     if (!windJson.windSpeed) {
       throw new Error('Failed to get wind speed');
@@ -31,8 +31,10 @@ export default async function MarineWeatherServer() {
       waveHeight: marineJson.waveHeight,
       windSpeed: windJson.windSpeed,
       uvIndex:windJson.uvIndex,
+      temperature:windJson.temp,
       time: getCurrentHourReadable(),
     };
+
     console.log(data,"datadatadata");
     
     return <MarineWeatherClient data={data} />;

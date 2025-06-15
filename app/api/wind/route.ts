@@ -4,7 +4,7 @@ const TEL_AVIV = { lat: 32.08, lon: 34.78 };
 
 export async function GET() {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${TEL_AVIV.lat}&longitude=${TEL_AVIV.lon}&hourly=wind_speed_10m,uv_index&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${TEL_AVIV.lat}&longitude=${TEL_AVIV.lon}&hourly=wind_speed_10m,uv_index,temperature_2m&timezone=auto`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -32,12 +32,14 @@ export async function GET() {
     if (index === -1) {
       return NextResponse.json({ error: 'No data for current hour' }, { status: 404 });
     }
-
+    console.log(json.hourly,"json.hourlyjson.hourly");
+  
     const windSpeedMps = json.hourly.wind_speed_10m[index];
     const uvIndex = json.hourly.uv_index[index];
-    const windSpeedKph = Math.trunc(windSpeedMps);
+    const windSpeed = Math.trunc(windSpeedMps);
+    const temp = json.hourly.temperature_2m[index]
 
-    return NextResponse.json({ windSpeed: windSpeedKph, uvIndex }, { status: 200 });
+    return NextResponse.json({ windSpeed, uvIndex,temp }, { status: 200 });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Internal server error';
     return NextResponse.json({ error: message }, { status: 500 });
