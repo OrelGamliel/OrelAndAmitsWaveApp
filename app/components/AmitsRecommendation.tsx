@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { getBeachScore, getLabel } from '../utils/helperFunctions';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function AmitsRecommendation({ waveHeight, windSpeed }: Props) {
-  let score:number = getBeachScore(waveHeight,windSpeed) 
+  const score:number = getBeachScore(waveHeight,windSpeed) 
 
 
   return (
