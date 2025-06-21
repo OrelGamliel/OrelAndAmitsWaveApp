@@ -7,6 +7,7 @@ import { MarineWeatherData } from '../utils/types';
 import '../styles/globals.scss';
 import AmitsRecommendation from './AmitsRecommendation';
 import WeatherDetails from './WeatherDetails';
+import ImageFlipPopup from './ImageFlipPopup';
 
 export default function MarineWeatherClient({ data }: { data: MarineWeatherData }) {
   return (
@@ -28,6 +29,7 @@ export default function MarineWeatherClient({ data }: { data: MarineWeatherData 
           </h1>
           <p className="text-sm text-gray-700">עדכון לשעה: {data.time}</p>
         </div>
+        <ImageFlipPopup/>
 
         <WeatherDetails data={data} />
 

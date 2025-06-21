@@ -22,6 +22,7 @@ const unitMap: Record<string, string> = {
 
 export default function WeatherDetails({ data }: WeatherDetailsProps) {
   return (
+    <>
     <div className="my-4 text-sm text-gray-800 space-y-2 bg-blue-50 rounded-lg p-4">
       {Object.entries(data)
         .filter(([key]) => key !== 'time') 
@@ -32,5 +33,6 @@ export default function WeatherDetails({ data }: WeatherDetailsProps) {
           </p>
         ))}
     </div>
+    </>
   );
 }
