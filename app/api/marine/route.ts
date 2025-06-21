@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: `No data found for time: ${now}` }, { status: 404 });
     }
 
-    const response: Record<string, any> = {
+    const response: Record<string, number | string> = {
       time: hourly.time[index],
     };
 

@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: `No data found for fields: ${missingFields.join(', ')}` }, { status: 404 });
     }
 
-    const result: Record<string, any> = {};
+    const result: Record<string, number | string> = {};
     for (const field of fields) {
       let value = json.hourly[field][index];
 
