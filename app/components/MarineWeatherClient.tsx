@@ -8,6 +8,7 @@ import '../styles/globals.scss';
 import AmitsRecommendation from './AmitsRecommendation';
 import WeatherDetails from './WeatherDetails';
 import ImageFlipPopup from './ImageFlipPopup';
+import SpotifyPlaylistButton from './SpotifyPlaylistButton';
 
 export default function MarineWeatherClient({ data }: { data: MarineWeatherData }) {
   return (
@@ -29,8 +30,10 @@ export default function MarineWeatherClient({ data }: { data: MarineWeatherData 
           </h1>
           <p className="text-sm text-gray-700">עדכון לשעה: {data.time}</p>
         </div>
-        <ImageFlipPopup/>
-
+        <div className="sticky top-4 z-50 flex gap-4 justify-between items-start px-4">
+          <ImageFlipPopup />
+          <SpotifyPlaylistButton />
+        </div>
         <WeatherDetails data={data} />
 
 
