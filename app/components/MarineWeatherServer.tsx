@@ -9,7 +9,7 @@ type ApiConfig = {
   fields: string[];
 };
 
-async function fetchAndValidate(api: ApiConfig): Promise<Record<string, any>> {
+async function fetchAndValidate(api: ApiConfig): Promise<Record<string, number | string>> {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL || ''}${api.endpoint}?fields=${api.fields.join(',')}`;
   const res = await fetch(url, { cache: 'no-store' });
   const json = await res.json();
