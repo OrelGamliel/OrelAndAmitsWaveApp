@@ -2,9 +2,15 @@ import { NextResponse } from 'next/server';
 
 const TEL_AVIV = { lat: 32.08, lon: 34.78 };
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${TEL_AVIV.lat}&longitude=${TEL_AVIV.lon}&hourly=wind_speed_10m,uv_index,temperature_2m&timezone=auto`;
+    const urlObj = new URL(request.url);
+    const fieldsParam = urlObj.searchParams.get('fields');
+    // default fields if none specified
+    const fields = fieldsParam ? fieldsParam.split(',') : ['wind_speed_10m', 'uv_index', 'temperature_2m'];
+
+    // build URL dynamically with requested fields
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${TEL_AVIV.lat}&longitude=${TEL_AVIV.lon}&hourly=${fields.join(',')}&timezone=auto`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -13,10 +19,11 @@ export async function GET() {
 
     const json = await response.json();
 
-    if (!json.hourly?.time || !json.hourly.wind_speed_10m || !json.hourly.uv_index) {
-      return NextResponse.json({ error: 'Incomplete weather data' }, { status: 404 });
+    if (!json.hourly?.time) {
+      return NextResponse.json({ error: 'No hourly time data found' }, { status: 404 });
     }
 
+    // format current date hour in API format
     const tz = 'Asia/Jerusalem';
     const formatter = new Intl.DateTimeFormat('sv-SE', {
       timeZone: tz,
@@ -32,14 +39,25 @@ export async function GET() {
     if (index === -1) {
       return NextResponse.json({ error: 'No data for current hour' }, { status: 404 });
     }
-    console.log(json.hourly,"json.hourlyjson.hourly");
-  
-    const windSpeedMps = json.hourly.wind_speed_10m[index];
-    const uvIndex = json.hourly.uv_index[index];
-    const windSpeed = Math.trunc(windSpeedMps);
-    const temp = json.hourly.temperature_2m[index]
 
-    return NextResponse.json({ windSpeed, uvIndex,temp }, { status: 200 });
+    const missingFields = fields.filter(field => !json.hourly[field]);
+    if (missingFields.length > 0) {
+      return NextResponse.json({ error: `No data found for fields: ${missingFields.join(', ')}` }, { status: 404 });
+    }
+
+    const result: Record<string, any> = {};
+    for (const field of fields) {
+      let value = json.hourly[field][index];
+
+      if (field === 'wind_speed_10m') {
+        value = Math.trunc(value);
+      }
+
+      result[field] = value;
+    }
+
+    return NextResponse.json(result, { status: 200 });
+
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Internal server error';
     return NextResponse.json({ error: message }, { status: 500 });

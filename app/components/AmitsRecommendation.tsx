@@ -4,13 +4,12 @@ import React from 'react';
 import { getBeachScore, getLabel } from '../utils/helperFunctions';
 
 type Props = {
-  waveHeight: number; // in meters
-  windSpeed: number;  // in km/h
-  uvIndex?: number;   // optional, for future use
+  wave_height: number; // in meters
+  wind_speed_10m: number;  // in km/h
 };
 
-export default function AmitsRecommendation({ waveHeight, windSpeed }: Props) {
-  const score:number = getBeachScore(waveHeight,windSpeed) 
+export default function AmitsRecommendation({ wave_height, wind_speed_10m }: Props) {
+  const score:number = getBeachScore(wave_height,wind_speed_10m) 
 
 
   return (

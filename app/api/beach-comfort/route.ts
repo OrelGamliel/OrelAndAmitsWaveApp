@@ -1,21 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { InferenceClient } from "@huggingface/inference";
+import { MarineWeatherData } from '@/app/utils/types';
 
 export async function POST(request: NextRequest) {
   try {
-    const { waveHeight, windSpeed,uvIndex,temperature } = await request.json();
+    const { wave_height, wind_speed_10m,uv_index,temperature_2m,time,sea_surface_temperature }:MarineWeatherData = await request.json();
 
-    // if (waveHeight === undefined || windSpeed === undefined || uvIndex === undefined) {
-    //   return NextResponse.json({ error: 'Missing waveHeight or windSpeed' }, { status: 400 });
-    // }
-
-    // const prompt = `Given the wave height is ${waveHeight} meters and the wind speed is ${windSpeed} km/h at the beach, is it comfortable and safe for a day at the ocean and the beach? Please answer briefly and clearly.`;
     const prompt = `
-    Wave height: ${waveHeight} meters
-    Wind speed: ${windSpeed} km/h
-    Uv index: ${uvIndex}
-    temperature: ${temperature}
-
+    Wave height: ${wave_height} meters
+    Wind speed: ${wind_speed_10m} km/h
+    Uv index: ${uv_index}
+    temperature: ${temperature_2m}
+    time in the day: ${time}
+    sea temp: ${sea_surface_temperature}
     As an expert beach advisor, is it comfortable and safe to spend a day at the beach under these conditions? 
     Answer in **one short sentence only**. Be clear and concise.
     `;
@@ -40,6 +37,8 @@ export async function POST(request: NextRequest) {
     //     },
     //   ],
     // });
+    console.log(prompt,"promptprompt");
+    
     const chatCompletion = await client.chatCompletion({
         provider: "together",
         model: "mistralai/Mixtral-8x7B-Instruct-v0.1",

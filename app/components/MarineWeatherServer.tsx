@@ -3,40 +3,48 @@ import MarineWeatherClient from './MarineWeatherClient';
 import { getCurrentHourReadable } from '../utils/helperFunctions';
 import { MarineWeatherData } from '../utils/types';
 
+type ApiConfig = {
+  name: string;
+  endpoint: string;
+  fields: string[];
+};
 
+async function fetchAndValidate(api: ApiConfig): Promise<Record<string, any>> {
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL || ''}${api.endpoint}?fields=${api.fields.join(',')}`;
+  const res = await fetch(url, { cache: 'no-store' });
+  const json = await res.json();
+
+  const missing = api.fields.filter(field => json[field] === undefined);
+  if (missing.length > 0) {
+    throw new Error(`Missing ${api.name} fields: ${missing.join(', ')}`);
+  }
+
+  return json;
+}
 
 export default async function MarineWeatherServer() {
   try {
-    const marineRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/marine`, {
-      cache: 'no-store',
-    });
-    const marineJson = await marineRes.json();
+    const apis: ApiConfig[] = [
+      {
+        name: 'marine',
+        endpoint: '/api/marine',
+        fields: ['wave_height', 'sea_surface_temperature'],
+      },
+      {
+        name: 'wind',
+        endpoint: '/api/wind',
+        fields: ['wind_speed_10m', 'uv_index', 'temperature_2m'],
+      },
+    ];
 
-    if (!marineJson.waveHeight || !marineJson.time) {
-      throw new Error('Failed to get marine data');
-    }
+    const results = await Promise.all(apis.map(api => fetchAndValidate(api)));
 
-    const windRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/wind`, {
-      cache: 'no-store',
-    });
-    const windJson = await windRes.json();
-
-    console.log(windJson,"windJson.temperature");
-    
-    if (!windJson.windSpeed) {
-      throw new Error('Failed to get wind speed');
-    }
-
+    const combinedData = results.reduce((acc, cur) => ({ ...acc, ...cur }), {});
     const data: MarineWeatherData = {
-      waveHeight: marineJson.waveHeight,
-      windSpeed: windJson.windSpeed,
-      uvIndex:windJson.uvIndex,
-      temperature:windJson.temp,
+      ...(combinedData as Omit<MarineWeatherData, 'time'>),
       time: getCurrentHourReadable(),
     };
 
-    console.log(data,"datadatadata");
-    
     return <MarineWeatherClient data={data} />;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
