@@ -8,6 +8,11 @@ export function getCurrentHourReadable(timeZone = 'Asia/Jerusalem'): string {
   };
   return now.toLocaleTimeString('en-GB', options);
 }
+export function extractHourFromIsoString(isoString: string): string {
+  const timePart = isoString.split('T')[1]; // "05:35"
+  const [hour, minute] = timePart.split(':'); // ["05", "35"]
+  return `${hour}:${minute}`;
+}
 function getWaveScore(waveHeight: number) {
   if (waveHeight <= 0.2) return 1;
   if (waveHeight <= 0.5) return 0.9;

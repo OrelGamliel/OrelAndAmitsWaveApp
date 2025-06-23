@@ -44,7 +44,8 @@ export default async function MarineWeatherServer() {
       ...(combinedData as Omit<MarineWeatherData, 'time'>),
       time: getCurrentHourReadable(),
     };
-
+    console.log(data,"datadatadata");
+    
     return <MarineWeatherClient data={data} />;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';

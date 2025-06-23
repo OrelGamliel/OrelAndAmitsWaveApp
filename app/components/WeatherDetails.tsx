@@ -10,6 +10,8 @@ const labelMap: Record<string, string> = {
   uv_index: '🔆 רמת קרינה',
   temperature_2m: '🌡️ טמפרטורה',
   sea_surface_temperature: '🌊 טמפרטורת הים',
+  sunrise: '🌅 שעת זריחה',
+  sunset: '🌇 שעת שקיעה',
 };
 
 const unitMap: Record<string, string> = {

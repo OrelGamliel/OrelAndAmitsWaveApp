@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const { wave_height, wind_speed_10m,uv_index,temperature_2m,time,sea_surface_temperature }:MarineWeatherData = await request.json();
 
     const prompt = `
-    Wave height: ${wave_height} meters
+    Wave height: ${wave_height} meters (Wave height above 0.70 is getting uncomfortable)
     Wind speed: ${wind_speed_10m} km/h
     Uv index: ${uv_index}
     temperature: ${temperature_2m}
