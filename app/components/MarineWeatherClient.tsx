@@ -10,7 +10,6 @@ import WeatherDetails from './WeatherDetails';
 import ImageFlipPopup from './ImageFlipPopup';
 import SpotifyPlaylistButton from './SpotifyPlaylistButton';
 import SideMenu from './SideMenu';
-import Link from 'next/link';
 
 export default function MarineWeatherClient({ data }: { data: MarineWeatherData }) {
   return (
