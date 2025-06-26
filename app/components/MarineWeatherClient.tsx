@@ -9,6 +9,8 @@ import AmitsRecommendation from './AmitsRecommendation';
 import WeatherDetails from './WeatherDetails';
 import ImageFlipPopup from './ImageFlipPopup';
 import SpotifyPlaylistButton from './SpotifyPlaylistButton';
+import SideMenu from './SideMenu';
+import Link from 'next/link';
 
 export default function MarineWeatherClient({ data }: { data: MarineWeatherData }) {
   return (
@@ -21,6 +23,7 @@ export default function MarineWeatherClient({ data }: { data: MarineWeatherData 
         transition={{ duration: 0.6 }}
         className="w-full max-w-md bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-6"
       >
+        <SideMenu/>
         <div className="text-center">
           <h1 className="text-2xl font-extrabold text-blue-800 mb-1">
             <img
