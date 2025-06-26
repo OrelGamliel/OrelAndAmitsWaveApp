@@ -104,7 +104,7 @@ useEffect(() => {
                     onChange={() => handleCheck(item.id)}
                     className="accent-blue-600 w-4 h-4"
                   />
-                  <span className={item.checked ? 'line-through text-gray-500' : ''}>
+                  <span style={{color: 'black'}} className={item.checked ? 'line-through text-gray-500' : ''}>
                     {item.text}
                   </span>
                 </label>
@@ -126,6 +126,7 @@ useEffect(() => {
             placeholder="הוסף פריט חדש..."
             value={newItem}
             onChange={e => setNewItem(e.target.value)}
+            style={{color: 'black'}}
             className="flex-1 border border-gray-300 rounded-xl px-4 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-sky-300 resize-none"
             />
           <button
